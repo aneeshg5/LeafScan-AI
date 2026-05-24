@@ -205,3 +205,8 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Project planning docs
+AGENTS.md
+DESIGN.md
+STATE.md
