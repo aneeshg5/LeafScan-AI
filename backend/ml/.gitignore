@@ -1,2 +1,2 @@
-weights/
-*.pt
+# Large model files that shouldn't be committed go here.
+# The EfficientNet weights are intentionally tracked (16 MB).
