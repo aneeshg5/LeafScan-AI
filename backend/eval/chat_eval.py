@@ -730,7 +730,7 @@ def print_report(all_results: list[MethodResult]) -> None:
             print(f"  │  Quality:   {quality}")
             if r.quality_breakdown.get("rationale"):
                 print(f"  │  Judge:     {r.quality_breakdown['rationale'][:100]}")
-            print(f"  │  Reply↓")
+            print("  │  Reply↓")
             for line in r.reply[:600].split("\n"):
                 print(f"  │    {line}")
             if len(r.reply) > 600:
