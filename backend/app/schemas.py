@@ -41,3 +41,22 @@ class HealthResponse(BaseModel):
 class ErrorResponse(BaseModel):
     error: str
     code: str
+
+
+class ApiKeyItem(BaseModel):
+    id: str
+    label: str
+    created_at: str
+    last_used_at: Optional[str]
+    revoked_at: Optional[str]
+
+
+class ApiKeyCreate(BaseModel):
+    label: str
+
+
+class ApiKeyCreateResponse(BaseModel):
+    id: str
+    label: str
+    created_at: str
+    key: str

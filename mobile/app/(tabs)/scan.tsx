@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import {
   ActivityIndicator,
+  Alert,
   Animated,
   Dimensions,
   Easing,
@@ -12,6 +13,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import * as Location from 'expo-location';
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import * as ImagePicker from 'expo-image-picker';
 import * as MediaLibrary from 'expo-media-library';
@@ -21,6 +23,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Image as GalleryIcon, RefreshCw, RotateCcw, Scan, X, Zap, ZapOff } from 'lucide-react-native';
 import { postPredict } from '../../lib/api';
 import { setResult } from '../../lib/resultCache';
+import { supabase } from '../../lib/supabase';
+import { useField } from '../../lib/FieldContext';
 
 const { width: W, height: H } = Dimensions.get('window');
 const FRAME_SIZE = Math.round(W * 0.72);
@@ -53,6 +57,90 @@ const STABILITY_WINDOW_MS = 600;
 
 type ScanState = 'idle' | 'captured' | 'analyzing';
 
+function haversineM(lat1: number, lon1: number, lat2: number, lon2: number): number {
+  const R = 6_371_000;
+  const dLat = (lat2 - lat1) * (Math.PI / 180);
+  const dLon = (lon2 - lon1) * (Math.PI / 180);
+  const a = Math.sin(dLat / 2) ** 2
+    + Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) * Math.sin(dLon / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
+function resolveLocation(fieldId: string | null): Promise<string | null> {
+  return new Promise(resolve => {
+    (async () => {
+      try {
+        const { status } = await Location.requestForegroundPermissionsAsync();
+
+        if (status !== 'granted') {
+          Alert.alert(
+            'Add location?',
+            'Location lets you track this plant on the map. Skip to save to history only.',
+            [{ text: 'Skip', onPress: () => resolve(null) }],
+            { cancelable: false },
+          );
+          return;
+        }
+
+        const pos = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.High });
+        const { latitude, longitude } = pos.coords;
+
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session) { resolve(null); return; }
+
+        const { data: plants } = await supabase
+          .from('plants')
+          .select('id, latitude, longitude, plant_type, nickname');
+
+        let nearest: { id: string; dist: number; label: string } | null = null;
+        for (const p of (plants ?? [])) {
+          const dist = haversineM(latitude, longitude, p.latitude, p.longitude);
+          if (!nearest || dist < nearest.dist) {
+            nearest = { id: p.id, dist, label: p.nickname ?? p.plant_type ?? 'plant' };
+          }
+        }
+
+        const createPlant = async () => {
+          const { data } = await supabase
+            .from('plants')
+            .insert({ user_id: session.user.id, latitude, longitude, field_id: fieldId })
+            .select('id')
+            .single();
+          return data?.id ?? null;
+        };
+
+        if (!nearest || nearest.dist > 10) {
+          resolve(await createPlant());
+        } else if (nearest.dist <= 2) {
+          Alert.alert(
+            'Same plant?',
+            `This scan is ${nearest.dist.toFixed(1)}m from "${nearest.label}". Link to the same plant?`,
+            [
+              { text: 'Yes, same plant', onPress: () => resolve(nearest!.id) },
+              { text: 'New plant', onPress: async () => resolve(await createPlant()) },
+              { text: 'Skip location', onPress: () => resolve(null) },
+            ],
+            { cancelable: false },
+          );
+        } else {
+          Alert.alert(
+            'Nearby plant found',
+            `"${nearest.label}" is ${Math.round(nearest.dist)}m away. Is this the same plant?`,
+            [
+              { text: 'Yes, link it', onPress: () => resolve(nearest!.id) },
+              { text: 'New plant', onPress: async () => resolve(await createPlant()) },
+              { text: 'Skip location', onPress: () => resolve(null) },
+            ],
+            { cancelable: false },
+          );
+        }
+      } catch {
+        resolve(null);
+      }
+    })();
+  });
+}
+
 function zoomDisplay(z: number) {
   const x = 1 + z * 9;
   return x < 10 ? `${x.toFixed(1)}×` : '10×';
@@ -61,6 +149,7 @@ function zoomDisplay(z: number) {
 export default function ScanScreen() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
+  const { selectedField } = useField();
   const [permission, requestPermission] = useCameraPermissions();
   const [mediaPermission, requestMediaPermission] = MediaLibrary.usePermissions();
   const [facing, setFacing] = useState<'front' | 'back'>('back');
@@ -77,6 +166,7 @@ export default function ScanScreen() {
   const zoomFadeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const zoomRef = useRef(0);
   const sliderBase = useRef(0);
+  const isAnalyzing = useRef(false);
 
   const pulse = useRef(new Animated.Value(1)).current;
   const flipSpin = useRef(new Animated.Value(0)).current;
@@ -219,16 +309,20 @@ export default function ScanScreen() {
   };
 
   const handleAnalyze = async () => {
-    if (!capturedUri) return;
-    setScanState('analyzing');
+    if (!capturedUri || isAnalyzing.current) return;
+    isAnalyzing.current = true;
     setError(null);
     try {
-      const result = await postPredict(capturedUri);
+      const plantId = await resolveLocation(selectedField?.id ?? null);
+      setScanState('analyzing');
+      const result = await postPredict(capturedUri, plantId);
       setResult(result.scan_id, result);
       router.push(`/result/${result.scan_id}`);
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Analysis failed');
       setScanState('captured');
+    } finally {
+      isAnalyzing.current = false;
     }
   };
 

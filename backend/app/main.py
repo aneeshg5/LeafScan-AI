@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
-from app.routers import health, predict, history
+from app.routers import api_keys, chat, drone, health, history, predict
 from app.models.classifier import classifier
 
 
@@ -23,3 +23,6 @@ app.add_middleware(
 app.include_router(health.router)
 app.include_router(predict.router)
 app.include_router(history.router)
+app.include_router(api_keys.router)
+app.include_router(drone.router)
+app.include_router(chat.router)

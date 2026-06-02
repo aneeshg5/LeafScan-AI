@@ -1,3 +1,19 @@
+# macOS metadata
+.DS_Store
+
+# Local MCP server config
+.mcp.json
+
+# Root-level media files (simulator screenshots, dropped images)
+/*.png
+/*.jpg
+
+# Screenshot capture directories
+screenshots/
+
+# Eval outputs (generated, not source)
+backend/eval/eval_results.json
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]

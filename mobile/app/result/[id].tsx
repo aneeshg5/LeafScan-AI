@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { AlertTriangle, CheckCircle, ChevronLeft, Leaf } from 'lucide-react-native';
+import { AlertTriangle, CheckCircle, ChevronLeft, Clock, Leaf } from 'lucide-react-native';
 import { getResult, clearResult } from '../../lib/resultCache';
 import type { PredictResponse } from '../../types';
 
@@ -128,6 +128,23 @@ export default function ResultScreen() {
         >
           <Leaf size={20} color={BG} strokeWidth={2} />
           <Text style={{ color: BG, fontSize: 16, fontWeight: '700' }}>Scan another</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => router.navigate('/(tabs)/history')}
+          style={{
+            borderRadius: 14,
+            paddingVertical: 15,
+            alignItems: 'center',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            gap: 8,
+            borderWidth: 1,
+            borderColor: SUBTLE_BORDER,
+          }}
+        >
+          <Clock size={20} color={SUBTLE} strokeWidth={1.5} />
+          <Text style={{ color: SUBTLE, fontSize: 16, fontWeight: '600' }}>View history</Text>
         </TouchableOpacity>
       </ScrollView>
     </View>
