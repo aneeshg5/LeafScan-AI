@@ -67,8 +67,7 @@ module.exports = {
     ],
     extra: {
       eas: {
-        // Run `eas init` to populate this after linking to your EAS project
-        projectId: '',
+        projectId: '58649c0e-b4ee-4a15-be02-429cb10fbe36',
       },
     },
   },
