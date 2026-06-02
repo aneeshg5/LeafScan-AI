@@ -10,6 +10,7 @@ class Settings(BaseSettings):
     tavily_api_key: str = ""
     serper_api_key: str = ""
     chat_daily_credits: int = 20
+    scan_daily_limit: int = 20
     port: int = 8000
     environment: str = "development"
 
