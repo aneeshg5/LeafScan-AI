@@ -32,10 +32,9 @@ Full interactive docs at `/docs` (Swagger UI). All endpoints except `/health` re
 
 ## Screenshots
 
-<!-- Add screenshots to docs/assets/ to display them here -->
-| Dashboard | Scan Result | Field Map | Crop Advisor |
-|:---------:|:-----------:|:---------:|:------------:|
-| <img src="docs/assets/dashboard.png" width="200"> | <img src="docs/assets/result.png" width="200"> | <img src="docs/assets/map.png" width="200"> | <img src="docs/assets/chat.png" width="200"> |
+| Dashboard | Field Map | History | Crop Advisor |
+|:---------:|:---------:|:-------:|:------------:|
+| <img src="docs/assets/dashboard.png" width="200"> | <img src="docs/assets/map.png" width="200"> | <img src="docs/assets/history.png" width="200"> | <img src="docs/assets/chat.png" width="200"> |
 
 ---
 
