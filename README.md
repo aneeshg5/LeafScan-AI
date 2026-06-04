@@ -2,7 +2,7 @@
 
 A plant disease detection system for farmers — point your phone at a leaf, get a diagnosis in under a second, then ask an AI agronomist what to do about it.
 
-**Live API:** `https://leafscan-api-1due.onrender.com` · **[Interactive Docs](https://leafscan-api-1due.onrender.com/docs)**
+**[▶ Live Demo — try the app in your browser](https://appetize.io/app/b_bcuxan5s6shhj6stu2osaj3kj4)** · **Live API:** `https://leafscan-api-1due.onrender.com` · **[Interactive Docs](https://leafscan-api-1due.onrender.com/docs)**
 
 ![Stack](https://img.shields.io/badge/React_Native-Expo_54-black?logo=expo)
 ![Stack](https://img.shields.io/badge/FastAPI-Python_3.11-009688?logo=fastapi)
