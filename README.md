@@ -30,7 +30,7 @@ Scan a fruit leaf with your phone, get a disease diagnosis, then ask an AI agron
 
 ## Engineering highlights
 
-**EfficientNet-B0 for inference-per-cost** — ~97% top-1 accuracy on the 38-class PlantVillage benchmark at 5.3 M parameters, roughly a tenth the size of ResNet-50. Runs in under 200 ms on a Render free instance with no quantization.
+**EfficientNet-B0 for inference-per-cost** — ~97% top-1 accuracy on the 38-class PlantVillage benchmark at 5.3 M parameters. Runs in under 200 ms on a Render free instance with no quantization.
 
 **Keyword-gated web search** — A frozenset of 60+ agricultural terms gates Tavily API calls in the chat router. Purely conversational turns skip the search entirely, cutting latency and API cost by ~70%.
 
@@ -38,7 +38,7 @@ Scan a fruit leaf with your phone, get a disease diagnosis, then ask an AI agron
 
 **API keys as SHA-256 hashes** — Keys are prefixed `lscan_` and generated with `secrets.token_hex(32)` (256 bits of entropy). Only the hash lands in the database; the raw key is shown exactly once at creation.
 
-**Per-plant AI memory** — After each chat turn, a second lightweight GPT-4o-mini call (capped at 200 tokens) extracts 1–3 observations and writes them to a `plant_memories` table. Future sessions prepend these facts to the system prompt.
+**Per-plant AI memory** — After each session, a second lightweight GPT-4o-mini call (capped at 200 tokens) extracts 1–3 observations and writes to a `plant_memories` table. Future sessions prepend these facts to system prompt.
 
 **Security boundary: anon key on mobile, service role on server** — The mobile bundle ships only the Supabase anon key. Every DB write is enforced by Row Level Security. The service role key lives in backend env vars.
 
