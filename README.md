@@ -2,13 +2,11 @@
 
 Point your phone at a plant leaf, get a disease diagnosis in under a second, then ask an AI agronomist what to do about it.
 
-[![Live Demo](https://img.shields.io/badge/▶_Live_Demo-Try_the_app-2ED158?style=for-the-badge)](https://appetize.io/app/b_bcuxan5s6shhj6stu2osaj3kj4)
-[![CI](https://github.com/aneeshg5/LeafScan-AI/actions/workflows/ci.yml/badge.svg)](https://github.com/aneeshg5/LeafScan-AI/actions/workflows/ci.yml)
+**[▶ Live Demo](https://appetize.io/app/b_bcuxan5s6shhj6stu2osaj3kj4)** · **[Live API](https://leafscan-api-1due.onrender.com)** · **[Interactive Docs](https://leafscan-api-1due.onrender.com/docs)** · **[Setup Guide](docs/setup.md)** · **[API Reference](docs/api.md)**
 
-![Stack](https://img.shields.io/badge/React_Native-Expo_54-black?logo=expo)
-![Stack](https://img.shields.io/badge/FastAPI-Python_3.11-009688?logo=fastapi)
-![Stack](https://img.shields.io/badge/PyTorch-EfficientNet--B0-EE4C2C?logo=pytorch)
-![Stack](https://img.shields.io/badge/Supabase-Postgres_+_Storage-3ECF8E?logo=supabase)
+> The free-tier server cold-starts in ~30 s after inactivity.
+
+![CI](https://github.com/aneeshg5/LeafScan-AI/actions/workflows/ci.yml/badge.svg)
 
 ---
 
@@ -75,8 +73,3 @@ Point your phone at a plant leaf, get a disease diagnosis in under a second, the
   (RLS)        answers)
 ```
 
----
-
-**[Live API](https://leafscan-api-1due.onrender.com)** · **[Interactive Docs](https://leafscan-api-1due.onrender.com/docs)** · **[Setup Guide](docs/setup.md)** · **[API Reference](docs/api.md)**
-
-> The free-tier server cold-starts in ~30 s after inactivity.
