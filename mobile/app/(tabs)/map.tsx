@@ -98,8 +98,8 @@ export default function MapScreen() {
     }
 
     setPlants(
-      (plantsRes.data ?? []).map(p => ({
-        ...(p as Plant),
+      (plantsRes.data ?? []).map((p: Plant) => ({
+        ...p,
         latestScan: latestByPlant.get(p.id) ?? null,
         scanCount: countByPlant.get(p.id) ?? 0,
       }))

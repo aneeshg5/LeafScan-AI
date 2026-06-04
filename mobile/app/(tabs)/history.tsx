@@ -185,10 +185,10 @@ export default function HistoryScreen() {
 
     const { data: urls } = await supabase.storage
       .from('scan-images')
-      .createSignedUrls(scanData.map(s => s.image_url), 3600);
+      .createSignedUrls(scanData.map((s: Scan) => s.image_url), 3600);
 
     const urlMap = Object.fromEntries((urls ?? []).map(u => [u.path, u.signedUrl]));
-    setScans(scanData.map(s => ({ ...s, signedUrl: urlMap[s.image_url] ?? null })));
+    setScans(scanData.map((s: Scan) => ({ ...s, signedUrl: urlMap[s.image_url] ?? null })));
     setLoading(false);
     setRefreshing(false);
   }, []);
