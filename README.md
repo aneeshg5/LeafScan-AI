@@ -8,7 +8,7 @@ A plant disease detection system for farmers — point your phone at a leaf, get
 ![Stack](https://img.shields.io/badge/FastAPI-Python_3.11-009688?logo=fastapi)
 ![Stack](https://img.shields.io/badge/PyTorch-EfficientNet--B0-EE4C2C?logo=pytorch)
 ![Stack](https://img.shields.io/badge/Supabase-Postgres_+_Storage-3ECF8E?logo=supabase)
-![CI](https://github.com/aneeshg5/leafscan/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/aneeshg5/LeafScan-AI/actions/workflows/ci.yml/badge.svg)
 
 ---
 
