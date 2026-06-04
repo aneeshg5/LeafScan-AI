@@ -30,9 +30,9 @@ Scan a fruit leaf with your phone, get a disease diagnosis, then ask an AI agron
 
 ## Engineering highlights
 
-**EfficientNet-B0 for inference-per-cost** — ~97% top-1 accuracy on the 38-class PlantVillage benchmark at 5.3 M parameters, roughly a tenth the size of ResNet-50. Runs in under 200 ms on a CPU-only Render free instance with no quantization.
+**EfficientNet-B0 for inference-per-cost** — ~97% top-1 accuracy on the 38-class PlantVillage benchmark at 5.3 M parameters, roughly a tenth the size of ResNet-50. Runs in under 200 ms on a Render free instance with no quantization.
 
-**Keyword-gated web search** — A frozenset of 60+ agricultural terms gates Tavily API calls in the chat router. Purely conversational turns skip the search entirely, cutting latency and API cost by ~70% in typical use.
+**Keyword-gated web search** — A frozenset of 60+ agricultural terms gates Tavily API calls in the chat router. Purely conversational turns skip the search entirely, cutting latency and API cost by ~70%.
 
 **Rolling 24-hour rate limiting without schema changes** — `POST /predict` counts rows in the existing `scans` table filtered by `user_id` and `created_at >= now() - 24h`. No Redis, no extra columns.
 
@@ -40,7 +40,7 @@ Scan a fruit leaf with your phone, get a disease diagnosis, then ask an AI agron
 
 **Per-plant AI memory** — After each chat turn, a second lightweight GPT-4o-mini call (capped at 200 tokens) extracts 1–3 observations and writes them to a `plant_memories` table. Future sessions prepend these facts to the system prompt.
 
-**Security boundary: anon key on mobile, service role on server** — The mobile bundle ships only the Supabase anon key. Every DB write is enforced by Row Level Security. The service role key lives exclusively in backend env vars.
+**Security boundary: anon key on mobile, service role on server** — The mobile bundle ships only the Supabase anon key. Every DB write is enforced by Row Level Security. The service role key lives in backend env vars.
 
 ---
 
