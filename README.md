@@ -1,12 +1,10 @@
 # LeafScan
 
-Point your phone at a plant leaf, get a disease diagnosis in under a second, then ask an AI agronomist what to do about it.
+Scan a fruit leaf with your phone, get a disease diagnosis, then ask an AI agronomist for effective, natural, and economical remedies.
 
 **[▶ Live Demo](https://appetize.io/app/b_bcuxan5s6shhj6stu2osaj3kj4)** · **[Live API](https://leafscan-api-1due.onrender.com)** · **[Interactive Docs](https://leafscan-api-1due.onrender.com/docs)** · **[Setup Guide](docs/setup.md)** · **[API Reference](docs/api.md)**
 
 > The free-tier server cold-starts in ~30 s after inactivity.
-
-![CI](https://github.com/aneeshg5/LeafScan-AI/actions/workflows/ci.yml/badge.svg)
 
 ---
 
