@@ -42,6 +42,19 @@ module.exports = {
     plugins: [
       'expo-router',
       [
+        'expo-build-properties',
+        {
+          android: {
+            kotlinVersion: '2.1.0',
+            compileSdkVersion: 35,
+            targetSdkVersion: 35,
+            buildToolsVersion: '35.0.0',
+            extraProguardRules: '',
+            jvmArgs: '-Xmx4096m -XX:MaxMetaspaceSize=512m',
+          },
+        },
+      ],
+      [
         'expo-camera',
         {
           cameraPermission:
