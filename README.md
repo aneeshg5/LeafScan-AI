@@ -1,6 +1,6 @@
 # LeafScan
 
-Scan a fruit leaf with your phone, get a disease diagnosis, then ask an AI agronomist for effective, natural, and economical remedies.
+Scan a fruit leaf with your phone, get a disease diagnosis, then ask an AI agronomist for effective, natural remedies.
 
 **[▶ Live Demo](https://appetize.io/app/b_bcuxan5s6shhj6stu2osaj3kj4)** · **[Live API](https://leafscan-api-1due.onrender.com)** · **[Interactive Docs](https://leafscan-api-1due.onrender.com/docs)** · **[Setup Guide](docs/setup.md)** · **[API Reference](docs/api.md)**
 
