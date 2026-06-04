@@ -9,7 +9,7 @@ module.exports = {
     icon: './assets/icon.png',
     scheme: 'leafscan',
     userInterfaceStyle: 'dark',
-    newArchEnabled: true,
+    newArchEnabled: false,
     splash: {
       image: './assets/splash-icon.png',
       resizeMode: 'contain',
