@@ -32,6 +32,8 @@ Scan a fruit leaf with your phone, get a disease diagnosis, then ask an AI agron
 
 **EfficientNet-B0 for inference-per-cost** — ~97% top-1 accuracy on the 38-class PlantVillage benchmark at 5.3 M parameters. Runs in under 200 ms on a Render free instance with no quantization.
 
+**Mahalanobis-distance OOD detection** — Before scoring, the server extracts the 1280-dim backbone embedding (EfficientNet's pre-classifier layer) and computes the minimum Mahalanobis distance to the 38 per-class centroids fit on the training set. Images geometrically far from all leaf classes are rejected with HTTP 422 before consuming the user's daily scan quota — avoiding the overconfidence failure mode of plain softmax thresholding.
+
 **Keyword-gated web search** — A frozenset of 60+ agricultural terms gates Tavily API calls in the chat router. Purely conversational turns skip the search entirely, cutting latency and API cost by ~70%.
 
 **Rolling 24-hour rate limiting without schema changes** — `POST /predict` counts rows in the existing `scans` table filtered by `user_id` and `created_at >= now() - 24h`. No Redis, no extra columns.

@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     serper_api_key: str = ""
     chat_daily_credits: int = 20
     scan_daily_limit: int = 20
+    ood_threshold: float = 75.0
     port: int = 8000
     environment: str = "development"
 

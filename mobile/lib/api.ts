@@ -26,8 +26,14 @@ export async function postPredict(imageUri: string, plantId?: string | null): Pr
   });
 
   if (!response.ok) {
-    const text = await response.text().catch(() => response.statusText);
-    throw new Error(`Predict failed (${response.status}): ${text}`);
+    let message: string;
+    try {
+      const json = await response.json();
+      message = json.detail ?? json.message ?? `Predict failed (${response.status})`;
+    } catch {
+      message = await response.text().catch(() => `Predict failed (${response.status})`);
+    }
+    throw new Error(message);
   }
 
   return response.json() as Promise<PredictResponse>;

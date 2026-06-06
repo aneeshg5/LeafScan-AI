@@ -5,7 +5,7 @@ from fastapi import APIRouter, Depends, File, HTTPException, Query, UploadFile, 
 from app.auth import require_auth
 from app.config import settings
 from app.db import supabase
-from app.models.classifier import classifier
+from app.models.classifier import OODException, classifier
 from app.schemas import PredictResponse
 
 router = APIRouter()
@@ -25,6 +25,23 @@ async def predict(
     if not file.content_type or not file.content_type.startswith("image/"):
         raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="File must be an image")
 
+    image_bytes = await file.read()
+    if len(image_bytes) > MAX_IMAGE_BYTES:
+        raise HTTPException(
+            status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
+            detail="Image exceeds the 10 MB size limit.",
+        )
+
+    # Run inference (+ OOD check) before the rate-limit query so rejected
+    # images don't consume the user's daily scan quota.
+    try:
+        result = classifier.predict(image_bytes)
+    except OODException:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail="Image doesn't appear to be a plant leaf. Please photograph a leaf clearly in good lighting.",
+        )
+
     since = (datetime.now(timezone.utc) - timedelta(days=1)).isoformat()
     count_res = (
         supabase.table("scans")
@@ -39,13 +56,6 @@ async def predict(
             detail=f"Daily scan limit of {settings.scan_daily_limit} reached. Resets in 24 hours.",
         )
 
-    image_bytes = await file.read()
-    if len(image_bytes) > MAX_IMAGE_BYTES:
-        raise HTTPException(
-            status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
-            detail="Image exceeds the 10 MB size limit.",
-        )
-    result = classifier.predict(image_bytes)
     scan_id = result["scan_id"]
     storage_path = f"{user_id}/{scan_id}.jpg"
 
