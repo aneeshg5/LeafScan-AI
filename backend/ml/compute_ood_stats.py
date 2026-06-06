@@ -24,15 +24,13 @@ verify that >95% of them exceed your chosen threshold. Adjust as needed and
 export as OOD_THRESHOLD= in backend/.env (or Render env vars).
 """
 
-import json
-import random
 from pathlib import Path
 
 import numpy as np
 import torch
-import torchvision
 import torch.nn as nn
-from torch.utils.data import DataLoader, Subset
+import torchvision
+from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
 
 DATA_DIR = "/kaggle/input/datasets/abdallahalidev/plantvillage-dataset/color"
